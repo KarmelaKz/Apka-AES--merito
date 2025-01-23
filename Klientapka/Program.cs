@@ -41,7 +41,7 @@ class Client
         }
     }
 
-    static string EncryptWithHMAC(string plainText)
+    static string EncryptWithHMAC(string plainText) //szyfrowanie wiadmosci 
     {
         using (Aes aes = Aes.Create())
         {
