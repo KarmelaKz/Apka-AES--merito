@@ -1,0 +1,23 @@
+PRZED poprawką ssh było open, PO poprawce ssh jest filtered czyli firewall(iptabels) blokuje ruch na port 22
+
+┌──(kara㉿Kara)-[~]
+└─$ nmap -p 22 127.0.0.1 
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-01-02 16:18 CET
+Nmap scan report for localhost (127.0.0.1)
+Host is up.
+
+PORT   STATE    SERVICE
+22/tcp filtered ssh
+
+Nmap done: 1 IP address (1 host up) scanned in 2.21 seconds
+                                                                                                    
+┌──(kara㉿Kara)-[~]
+└─$ nmap -p 22 10.0.2.15
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-01-02 16:19 CET
+Nmap scan report for 10.0.2.15
+Host is up.
+
+PORT   STATE    SERVICE
+22/tcp filtered ssh
+
+Nmap done: 1 IP address (1 host up) scanned in 2.18 seconds
