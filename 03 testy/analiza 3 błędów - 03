@@ -1,0 +1,135 @@
+Podatności znalezione w raporcie
+
+Na podstawie fragmentu Lynis widzimy kilka usług oznaczonych jako UNSAFE lub EXPOSED. To są potencjalne podatności:
+
+    NetworkManager.service (7.8 – EXPOSED) → Usługa sieciowa z szerokimi uprawnieniami, może być punktem wejścia.
+
+    cron.service (9.6 – UNSAFE) → Harmonogram zadań, jeśli źle skonfigurowany, może pozwolić na uruchamianie złośliwych skryptów.
+
+    dbus.service (9.6 – UNSAFE) → Mechanizm komunikacji międzyprocesowej, często celem eskalacji uprawnień.
+
+    ssh.service (9.6 – UNSAFE) → Serwer SSH, jeśli nie ma odpowiednich zabezpieczeń (np. PermitRootLogin, brak kluczy), to duże ryzyko.
+
+    lightdm.service (9.6 – UNSAFE) → Menedżer logowania graficznego, potencjalnie podatny na błędy konfiguracji.
+
+    udisks2.service (9.6 – UNSAFE) → Usługa zarządzania dyskami, może pozwolić na nieautoryzowany dostęp do urządzeń.
+    
+    ak wybrać podatności do analizy ryzyka
+
+Do raportu wybierz 2–3 najciekawsze i oceń je wg modelu: Ryzyko = Prawdopodobieństwo × Wpływ
+Przykład 1: SSH (ssh.service)
+
+    Prawdopodobieństwo: wysokie (często atakowany port, łatwo dostępny z zewnątrz).
+
+    Wpływ: krytyczny (przejęcie systemu).
+
+    Ocena końcowa: High.
+
+    Poprawka: wyłączenie logowania root, wymuszenie kluczy SSH, firewall.
+
+    Retest: nmap -p 22 → port zamknięty lub ograniczony.
+
+Przykład 2: Cron (cron.service)
+
+    Prawdopodobieństwo: średnie (wymaga dostępu do systemu).
+
+    Wpływ: wysoki (możliwość uruchamiania złośliwych skryptów).
+
+    Ocena końcowa: Medium-High.
+
+    Poprawka: ograniczenie uprawnień, monitorowanie crontab.
+
+    Retest: sprawdzenie konfiguracji i logów.
+
+Przykład 3: NetworkManager (NetworkManager.service)
+
+    Prawdopodobieństwo: średnie (zależne od konfiguracji sieci).
+
+    Wpływ: średni (może pozwolić na manipulację połączeniami).
+
+    Ocena końcowa: Medium.
+
+    Poprawka: ograniczenie dostępu, aktualizacja pakietów.
+
+    Retest: ponowny audyt Lynis.
+
+Uwierzytelnianie i hasła
+
+    Password hashing rounds: DISABLED → hasła są hashowane, ale bez dodatkowych rund wzmacniających (np. SHA512 z rounds).
+
+    Brak polityki starzenia haseł (password aging: DISABLED) → użytkownicy mogą używać jednego hasła bezterminowo.
+
+    Brak logowania nieudanych prób logowania (DISABLED) → brak monitorowania prób brute-force.
+
+    PAM password strength tools: SUGGESTION → brak wymuszenia silnych haseł.
+
+👥 Konta i sudo
+
+    /etc/sudoers.d ma WARNING przy uprawnieniach → potencjalnie zbyt szerokie prawa dostępu.
+
+    Accounts without expire date: SUGGESTION → konta mogą być aktywne bezterminowo, co zwiększa ryzyko.
+
+🖥 Shell i sesje
+
+    Brak session timeout (NONE) → sesje mogą pozostawać otwarte w nieskończoność.
+
+    Brak ustawionego umask w wielu plikach (NOT FOUND / SUGGESTION) → nowe pliki mogą mieć zbyt szerokie prawa dostępu.
+
+💾 System plików
+
+    /home mount point: SUGGESTION → brak dodatkowych opcji bezpieczeństwa (np. nodev, nosuid).
+
+    /var mount point: SUGGESTION → podobnie jak wyżej.
+
+    /proc mount (hidepid): SUGGESTION → procesy są widoczne dla wszystkich użytkowników, co ułatwia enumerację.
+
+    Mount options of /, /dev, /dev/shm, /tmp: PARTIALLY HARDENED/NON DEFAULT → nie wszystkie opcje bezpieczeństwa są włączone.
+
+🔌 Urządzenia
+
+    usb-storage driver: NOT DISABLED → możliwość podłączenia pendrive i uruchomienia złośliwego kodu.
+
+    USBGuard: NOT FOUND → brak narzędzia do kontroli urządzeń USB.
+
+    firewire ohci driver: NOT DISABLED → potencjalny wektor ataku przez FireWire.
+
+✅ Jak wybrać podatności do analizy ryzyka
+
+Do raportu wybierz 2–3 najważniejsze, np.:
+Przykład 1: Brak logowania nieudanych prób logowania
+
+    Prawdopodobieństwo: wysokie (łatwo przeoczyć atak brute-force).
+
+    Wpływ: krytyczny (możliwość złamania hasła).
+
+    Ocena końcowa: High.
+
+    Poprawka: włączyć pam_tally2 lub faillog do rejestrowania prób.
+
+    Retest: sprawdzić logi po nieudanych próbach.
+
+Przykład 2: Brak polityki starzenia haseł
+
+    Prawdopodobieństwo: średnie (użytkownicy rzadko zmieniają hasła).
+
+    Wpływ: wysoki (większe ryzyko złamania hasła).
+
+    Ocena końcowa: Medium-High.
+
+    Poprawka: ustawić PASS_MAX_DAYS i PASS_MIN_DAYS w /etc/login.defs.
+
+    Retest: sprawdzić konfigurację i wymuszoną zmianę hasła.
+
+Przykład 3: Brak hidepid w /proc
+
+    Prawdopodobieństwo: średnie (każdy użytkownik może podejrzeć procesy).
+
+    Wpływ: średni (ułatwia enumerację i przygotowanie ataku).
+
+    Ocena końcowa: Medium.
+
+    Poprawka: zamontować /proc z opcją hidepid=2.
+
+    Retest: sprawdzić widoczność procesów dla zwykłego użytkownika.
+    
+    

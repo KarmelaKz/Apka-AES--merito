@@ -1,0 +1,98 @@
+Ukrycie procesów (hidepid=2) 
+
+PRZED: widziałaś wszystkie procesy systemowe
+
+PO: widzisz tylko swoje procesy
+
+┌──(kara㉿Kara)-[~]
+└─$ sudo nano /etc/fstab   
+
+w nano dodanie : proc /proc proc  defaults,hidepid=2 0 0       
+                                                                                                    
+┌──(kara㉿Kara)-[~]
+└─$ sudo mount -o remount /proc
+mount: (hint) your fstab has been modified, but systemd still uses
+       the old version; use 'systemctl daemon-reload' to reload.
+                                                                                                    
+┌──(kara㉿Kara)-[~]
+└─$ systemctl daemon-reload    
+                                                                                                    
+┌──(kara㉿Kara)-[~]
+└─$ ps aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+kara         919  0.0  0.1 100876 11976 ?        S<sl 12:34   0:00 /usr/bin/pipewire
+kara         920  0.0  0.0  84336  5280 ?        Ssl  12:34   0:00 /usr/bin/pipewire -c filter-chain
+kara         922  0.0  0.1 479628 17844 ?        S<sl 12:34   0:00 /usr/bin/wireplumber
+kara         923  0.0  0.0  98776  8512 ?        S<sl 12:34   0:00 /usr/bin/pipewire-pulse
+kara         924  0.0  0.1 314028 10116 ?        SLsl 12:34   0:00 /usr/bin/gnome-keyring-daemon --f
+kara         925  0.0  0.0   7996  5276 ?        Ss   12:34   0:00 /usr/bin/dbus-daemon --session --
+kara         947  0.0  0.2 337928 24564 ?        Ssl  12:34   0:00 xfce4-session
+kara        1007  0.0  0.0  17260  1652 ?        S    12:34   0:00 /usr/bin/VBoxClient --clipboard
+kara        1009  0.0  0.0 215448  3864 ?        Sl   12:34   0:01 /usr/bin/VBoxClient --clipboard
+kara        1022  0.0  0.0  17260  1704 ?        S    12:34   0:00 /usr/bin/VBoxClient --seamless
+kara        1023  0.3  0.0 215548  3112 ?        Sl   12:34   0:44 /usr/bin/VBoxClient --seamless
+kara        1030  0.0  0.0  17260  1784 ?        S    12:34   0:00 /usr/bin/VBoxClient --draganddrop
+kara        1031  0.5  0.0 216064  2784 ?        Sl   12:34   1:22 /usr/bin/VBoxClient --draganddrop
+kara        1054  0.0  0.0 380912  7536 ?        Ssl  12:34   0:00 /usr/libexec/at-spi-bus-launcher
+kara        1064  0.0  0.0  17260  1772 ?        S    12:34   0:00 /usr/bin/VBoxClient --vmsvga
+kara        1065  0.0  0.0 216980  4220 ?        Sl   12:34   0:11 /usr/bin/VBoxClient --vmsvga
+kara        1067  0.0  0.0   7352  4668 ?        S    12:34   0:00 /usr/bin/dbus-daemon --config-fil
+kara        1083  0.0  0.0 234180  7472 ?        Sl   12:34   0:03 /usr/libexec/at-spi2-registryd --
+kara        1101  1.2  1.3 1426448 126708 ?      Sl   12:34   2:58 xfwm4
+kara        1105  0.0  0.0 312872  7860 ?        Ssl  12:34   0:00 /usr/libexec/gvfsd
+kara        1111  0.0  0.0 457876  7260 ?        Sl   12:34   0:00 /usr/libexec/gvfsd-fuse /run/user
+kara        1132  0.0  0.2 302600 27908 ?        Sl   12:34   0:03 xfsettingsd
+kara        1136  0.0  0.4 537252 44420 ?        Sl   12:34   0:10 xfce4-panel
+kara        1141  0.0  0.5 468712 49612 ?        Sl   12:34   0:04 Thunar --daemon
+kara        1147  0.0  0.6 485548 65472 ?        Sl   12:34   0:06 xfdesktop
+kara        1148  0.0  0.4 461156 43516 ?        Sl   12:34   0:02 /usr/lib/x86_64-linux-gnu/xfce4/p
+kara        1155  0.5  0.7 383524 71268 ?        Sl   12:34   1:13 /usr/lib/x86_64-linux-gnu/xfce4/p
+kara        1156  0.0  0.2 410628 25300 ?        Sl   12:34   0:00 /usr/lib/x86_64-linux-gnu/xfce4/p
+kara        1157  0.5  0.3 338944 28536 ?        Sl   12:34   1:15 /usr/lib/x86_64-linux-gnu/xfce4/p
+kara        1158  0.0  0.4 460212 42304 ?        Sl   12:34   0:00 /usr/lib/x86_64-linux-gnu/xfce4/p
+kara        1159  0.0  0.4 459988 39460 ?        Sl   12:34   0:00 /usr/lib/x86_64-linux-gnu/xfce4/p
+kara        1160  0.1  0.4 386840 41136 ?        Sl   12:34   0:14 /usr/lib/x86_64-linux-gnu/xfce4/p
+kara        1162  0.0  0.4 386648 40120 ?        Sl   12:34   0:00 /usr/lib/x86_64-linux-gnu/xfce4/p
+kara        1205  0.0  0.4 462336 42796 ?        Ssl  12:34   0:03 /usr/lib/x86_64-linux-gnu/xfce4/n
+kara        1209  0.0  0.4 622636 46688 ?        Sl   12:34   0:00 nm-applet
+kara        1211  0.0  0.4 463584 41540 ?        Sl   12:34   0:00 /usr/libexec/polkit-mate-authenti
+kara        1216  0.0  0.3 412368 28616 ?        Sl   12:34   0:02 light-locker
+kara        1218  0.0  0.6 527648 59152 ?        Sl   12:34   0:01 /usr/bin/python3 /usr/bin/blueman
+kara        1222  0.0  0.4  64196 39464 ?        S    12:34   0:00 /usr/bin/python3 /usr/share/syste
+kara        1223  0.0  0.0 922652  8648 ?        Sl   12:34   0:00 xiccd
+kara        1237  0.0  0.2 263228 24276 ?        Sl   12:34   0:03 xfce4-power-manager
+kara        1249  0.0  0.0 230560  5748 ?        Ssl  12:34   0:00 /usr/libexec/dconf-service
+kara        1253  0.0  0.0 308352  6256 ?        Sl   12:34   0:00 /usr/libexec/geoclue-2.0/demos/ag
+kara        1358  0.0  0.1 426460 13204 ?        Ssl  12:34   0:00 /usr/libexec/gvfs-udisks2-volume-
+kara        1379  0.0  0.0 308816  7072 ?        Ssl  12:34   0:00 /usr/libexec/gvfs-gphoto2-volume-
+kara        1388  0.0  0.0 389224  8260 ?        Ssl  12:34   0:02 /usr/libexec/gvfs-afc-volume-moni
+kara        1397  0.0  0.0 307792  6392 ?        Ssl  12:34   0:00 /usr/libexec/gvfs-goa-volume-moni
+kara        1402  0.0  0.0 307860  6616 ?        Ssl  12:34   0:00 /usr/libexec/gvfs-mtp-volume-moni
+kara        1403  0.2  0.6 802864 63792 ?        Sl   12:34   0:29 mousepad
+kara        1408  0.0  0.0  46384  7004 ?        Ss   12:34   0:00 /usr/libexec/bluetooth/obexd
+kara        1424  0.0  0.0 534320  9080 ?        Sl   12:34   0:00 /usr/libexec/gvfsd-trash --spawne
+kara        1432  0.0  0.0 234448  6824 ?        Ssl  12:34   0:00 /usr/libexec/gvfsd-metadata
+kara        1583  7.1  6.5 12042548 616224 ?     Sl   12:34  16:36 /usr/lib/firefox-esr/firefox-esr
+kara        1670  0.0  0.4 226556 38240 ?        Sl   12:34   0:00 /usr/lib/firefox-esr/firefox-esr 
+kara        1681  0.0  0.1 480184 18528 ?        Ssl  12:34   0:00 /usr/libexec/xdg-desktop-portal
+kara        1693  0.0  0.0 607204  6944 ?        Ssl  12:34   0:00 /usr/libexec/xdg-document-portal
+kara        1699  0.0  0.0 308508  6536 ?        Ssl  12:34   0:00 /usr/libexec/xdg-permission-store
+kara        1712  0.0  0.2 407000 19556 ?        Ssl  12:34   0:00 /usr/libexec/xdg-desktop-portal-g
+kara        1753  0.0  1.0 2453388 100116 ?      Sl   12:34   0:06 /usr/lib/firefox-esr/firefox-esr 
+kara        1795  0.1  1.8 2531436 174016 ?      Sl   12:34   0:15 /usr/lib/firefox-esr/firefox-esr 
+kara        1905  3.3  4.8 3177572 455728 ?      Sl   12:34   7:41 /usr/lib/firefox-esr/firefox-esr 
+kara        1910  0.7  3.1 2752796 300324 ?      Sl   12:34   1:44 /usr/lib/firefox-esr/firefox-esr 
+kara        1959  0.0  0.3 223764 36048 ?        Sl   12:34   0:00 /usr/lib/firefox-esr/firefox-esr 
+kara        3047  0.0  1.7 2599260 167580 ?      Sl   12:36   0:12 /usr/lib/firefox-esr/firefox-esr 
+kara        3369  0.0  0.7 2412972 75608 ?       Sl   12:37   0:04 /usr/lib/firefox-esr/firefox-esr 
+kara        6446  0.3  2.4 2729824 229716 ?      Sl   12:43   0:43 /usr/lib/firefox-esr/firefox-esr 
+kara        7706  0.1  1.0 463212 103616 ?       Sl   12:45   0:19 /usr/bin/qterminal
+kara        7717  0.0  0.0  10608  6976 pts/0    Ss   12:45   0:05 /usr/bin/zsh
+kara       88827  0.0  0.0 460824  8968 ?        Sl   15:34   0:00 /usr/libexec/gvfsd-network --spaw
+kara       88838  0.0  0.0 388100  8912 ?        Sl   15:34   0:00 /usr/libexec/gvfsd-dnssd --spawne
+kara       88845  0.0  0.0 386620  8384 ?        Sl   15:34   0:00 /usr/libexec/gvfsd-wsdd --spawner
+kara       88850  0.0  0.3  41836 31388 ?        S    15:34   0:00 python3 /usr/bin/wsdd --no-host -
+kara       89243  0.0  0.7 2413556 75168 ?       Sl   15:35   0:01 /usr/lib/firefox-esr/firefox-esr 
+kara       92835  0.0  0.7 2413556 75312 ?       Sl   15:42   0:01 /usr/lib/firefox-esr/firefox-esr 
+kara      115784  0.0  0.0 307564  6264 ?        Sl   16:27   0:00 /usr/lib/x86_64-linux-gnu/xfce4/x
+kara      115948  100  0.0   8516  3948 pts/0    R+   16:27   0:00 ps aux
